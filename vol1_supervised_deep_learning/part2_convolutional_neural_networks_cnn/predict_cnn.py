@@ -29,5 +29,11 @@ for i,val in enumerate(class_indices):
     if result[0][0] == class_indices[str(val)]:
         prediction = str(val)
 
+try:
+    prediction
+except NameError:
+    print("Sorry we could not define the prediction")
+else:
+    print("Final prediction: "+prediction)
 
-print("Final prediction: "+prediction)
+    

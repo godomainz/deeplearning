@@ -2,6 +2,7 @@ import tensorflow as tf
 from keras.preprocessing.image import ImageDataGenerator
 import os
 import numpy as np
+from datetime import datetime
 
 class CNN:
 
@@ -9,7 +10,6 @@ class CNN:
     checkpoint_dir = 'ckpt'
 
     # Prepossessing training set
-
     train_datagen = ImageDataGenerator(rescale=1./255, shear_range=0.2, zoom_range=0.2, horizontal_flip=True)
     training_set = train_datagen.flow_from_directory('dataset/training_set', target_size=(64, 64), batch_size=32,
                                                     class_mode='binary')
@@ -76,7 +76,7 @@ class CNN:
             # This callback saves a SavedModel every 100 batches.
             # We include the training loss in the folder name.
             tf.keras.callbacks.ModelCheckpoint(
-                filepath=self.checkpoint_dir + '/'+ 'ckpt-loss={loss:.2f}',
+                filepath=self.checkpoint_dir + '/'+ 'ckpt-loss={loss:.2f}'+'_TIMESTAMP_'+self.get_current_date_time()+'.h5',
                 save_freq=100)
         ]
 
@@ -88,8 +88,19 @@ class CNN:
     def save_class_names(self):
         np.save('class_names.npy', self.training_set.class_indices)
 
+    def get_current_date_time(self):
+        today = datetime.today()
+        date = today.strftime("%Y_%m_%d")
+        print("date =", date)
+        now = datetime.now()
+        current_time = now.strftime("%H_%M_%S")
+        print("Current Time =", current_time)
+        return date+"_"+current_time
+
 if __name__ == "__main__":
     my_cnn = CNN()
+    my_cnn.save_class_names()
+    print(my_cnn.get_current_date_time())
     # Step 1 - Convolution
     my_cnn.first_convolution()
     # Step 2 - Pooling
@@ -104,4 +115,4 @@ if __name__ == "__main__":
     my_cnn.output_layer()
     # Compiling the CNN
     my_cnn.compile_fit_save()
-    my_cnn.save_class_names()
+    
