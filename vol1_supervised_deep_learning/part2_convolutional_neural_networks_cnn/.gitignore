@@ -3,3 +3,4 @@
 /ckpt/
 *.npy
 *.h5
+/class_names.csv
