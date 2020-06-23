@@ -28,6 +28,8 @@ for i,val in enumerate(class_indices):
 
     if result[0][0] == class_indices[str(val)]:
         prediction = str(val)
+        prediction = prediction[:-1]
+        prediction = prediction[0:].capitalize()
 
 try:
     prediction

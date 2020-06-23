@@ -3,6 +3,7 @@ from keras.preprocessing.image import ImageDataGenerator
 import os
 import numpy as np
 from datetime import datetime
+import csv
 
 class CNN:
 
@@ -87,6 +88,9 @@ class CNN:
 
     def save_class_names(self):
         np.save('class_names.npy', self.training_set.class_indices)
+        with open('class_names.csv', 'w') as f:
+            for key in self.training_set.class_indices.keys():
+                f.write("%s,%s\n"%(key,self.training_set.class_indices[key]))
 
     def get_current_date_time(self):
         today = datetime.today()
